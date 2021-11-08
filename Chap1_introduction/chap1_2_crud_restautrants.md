@@ -402,7 +402,7 @@ db.restaurants.distinct("borough");
 db.restaurants.distinct("field", { key: "value" });
 ```
 
-- 06 Trouvez tous les restaurants dans le quartier du Bronx qui ont le même nombre de grades.
+- 06 Trouvez tous les restaurants dans le quartier du Bronx qui ont eu 4 grades.
 
 - 07. Sélectionnez les restaurants dont le grade est A ou B dans le Bronx.
 
@@ -414,13 +414,17 @@ db.restaurants.distinct("field", { key: "value" });
 
 - 09. Sélectionnez maintenant tous les restaurants qui ont le mot "Coffee" ou "coffee" dans la propriété name du document. Puis, même question mais uniquement dans le quartier du Bronx.
 
-Comptez également leurs nombres total et calculez la différences avec Coffee et coffee.
+Comptez également leurs nombres total et calculez la différences avec Coffee et coffee. Utilisez une Regex :
+
+```js
+/[aA]lan/
+```
 
 - 10. Trouvez tous les restaurants avec les mots Coffee ou Restaurant et qui ne contiennent pas le mot Starbucks. Puis, même question mais uniquement dans le quartier du Bronx.
 
-- 11. Nouvelle question : Trouvez tous les restaurants qui ont dans leur nom le mot clé coffee, qui sont dans le bronx ou dans Brooklyn, qui ont eu exactement 4 appréciations (grades).
+- 11. Trouvez tous les restaurants qui ont dans leur nom le mot clé coffee, qui sont dans le bronx ou dans Brooklyn, qui ont eu exactement 4 appréciations (grades).
 
-- 12. Affichez tous les noms de ces restaurants en majuscule avec leur dernière date et permière date d'évaluation.
+- 12. Reprenez la question 11 et affichez tous les noms de ces restaurants en majuscule avec leur dernière date et permière date d'évaluation.
 
 - 13. Précisez également le quartier dans lequel ce restaurent se trouve.
 
