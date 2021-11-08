@@ -218,6 +218,10 @@ db.restaurants.find({
 db.authors.find({ $or: [{ name: "Alan" }, { name: "Alice" }] });
 ```
 
+## 01 Exercice analyser une requête
+
+Analysez la requête suivante sans l'exécuter dans MongoDB. Et expliquez ce qu'elle récupère.
+
 Voici un exemple de condition logique en utilisant OR et AND. Remarquez le deuxième argument de la méthode find, il permet de faire une projection, c'est-à-dire de sélectionner uniquement certaine(s) propriété(s) du document :
 
 ```js
@@ -229,6 +233,8 @@ db.restaurants.find(
   { name: 1, borough: 1 }
 );
 ```
+
+
 
 Cela correspondrait (...) en SQL à la requête suivante :
 
