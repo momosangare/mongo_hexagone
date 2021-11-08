@@ -374,39 +374,10 @@ db.collection.findOne(query, restriction).sort({ key: 1 }); // 1 pour ordre croi
 
 2.1 Quels sont les restaurants qui ont eu un grade A avec un score supérieur ou égal à 20 en même temps ? Affichez uniquement les noms et ordonnez les par ordre décroissant. Affichez le nombre de résultat.
 
-### correction 2.1
-
-```js
-db.restaurants
-  .find({
-    grades: {
-      $elemMatch: {
-        score: { $gte: 20 },
-        grade: "A",
-      },
-    },
-  },
-  { _id : 0, name : 1 }
-  )
-  .sort({
-    name: -1,
-  })
-  .pretty();
-```
 
 2.2 Quels sont les restaurants qui ont eu un grade A et un score supérieur ou égal à 20 ? Affichez uniquement les noms et ordonnez les par ordre décroissant. Affichez le nombre de résultat.
 
-```js
-db.restaurants
-  .find({
-    "grades.grade": "A",
-    "grades.score": { $gte: 20 },
-  })
-  .sort({
-    name: -1,
-  })
-  .pretty();
-```
+
 
 Remarque pour la dernière partie de la question utilisez la méthode count :
 
@@ -426,33 +397,6 @@ db.restaurants.distinct("borough");
 db.restaurants.distinct("field", { key: "value" });
 ```
 
-### correction
-
-```js
-db.restaurants.distinct("cuisine", { borough: "Bronx" });
-```
-
-- 5. Sélectionnez les restaurants dont le grade est A ou B dans le Bronx.
-
-### Correction
-
-```js
-db.restaurants
-  .find(
-    {
-      $or: [{ "grades.grade": "A" }, { "grades.grade": "B" }],
-      borough: "Bronx",
-    },
-    {
-      name: 1,
-      _id: 0,
-      "grades.grade": 1,
-      borough: 1,
-    }
-  )
-  .pretty();
-```
-
 - 6. Même question mais, on aimerait récupérer les restaurants qui ont eu à la dernière inspection un A ou B. Vous pouvez utilisez la notion d'indice sur la clé grade :
 
 ```js
@@ -460,24 +404,6 @@ db.restaurants
 
 ```
 
-### Correction
-
-```js
-db.restaurants
-  .find(
-    {
-      $or: [{ "grades.0.grade": "A" }, { "grades.0.grade": "B" }],
-      borough: "Bronx",
-    },
-    {
-      name: 1,
-      _id: 0,
-      grades: 1,
-      borough: 1,
-    }
-  )
-  .pretty();
-```
 
 _Rechercher tous les grades distincts dans la collection._
 
@@ -487,25 +413,6 @@ db.restaurants.distinct("grades.grade");
 
 On aimerait maintenant avoir que des A ou que des B dans les notations des restaurants.
 
-```js
-db.restaurants.find(
-    {
-        "grades.grade" : "A",
-        "grades.grade" : { $nin : ["B", "C", "Not Yet Graded", "P", "Z"]},
-        "grades": { $not: { $size: 0 } },
-        "borough": "Bronx"
-    },
-    {
-        "name" : 1,
-        "_id" : 0,
-        "grades" : 1,
-        "borough": 1
-    }
-).forEach(doc => {
-  const json = tojson( doc.grades ) ;
-  print(json);
-})
-```
 
 - 7. Sélectionnez maintenant tous les restaurants qui ont le mot "Coffee" ou "coffee" dans la propriété name du document. Puis, même question mais uniquement dans le quartier du Bronx.
 
@@ -527,29 +434,6 @@ ISODate("2012-10-24T00:00:00Z"); // UTC -2h par rapport à l'heure française
 "bonjour".toUpperCase();
 ```
 
-### Correction exercice 11
-
-```js
-db.restaurants.find({
-    name: /coffee/i,
-    borough: { $in: [/bronx/i, /Brooklyn/i] },
-    grades: { $size: 4 }
-},
-    { "_id": 0, "name": 1, "grades.date": 1, borough: 1 }
-).forEach(
-    doc => {
-        const { name, grades, borough } = doc;
-        print(`Borough: ${borough}`);
-        print();
-        print(name.toUpperCase());
-        grades.slice(0, 1).forEach(({ date }) => {
-            print(`Last date : ${date.toDateString()}`);
-        });
-        grades.slice(-1).forEach(({ date }) => print(`First date ${date.toDateString()}`));
-        print("----------------------------------")
-    }
-);
-```
 
 ## Recherche de restaurents à proximité d'un lieu
 
@@ -576,19 +460,6 @@ Indications : vous utiliserez la syntaxe suivante avec les opérateurs MongoDB :
 { $nearSphere: { $geometry: { type: "Point", coordinates: coordinate }, $maxDistance: VOTRE_DISTANCE_EN_METRE } }
 ```
 
-### Correction 
-
-```js
-const DISTANCE = 5 * 1609.34; // rayon 
-const COORDINATE  = [-73.961704, 40.662942];
-
-db.restaurants.find({
-  "address.coord": { 
-      $nearSphere: { $geometry: { type: "Point", coordinates: COORDINATE }, $maxDistance: DISTANCE } }
-  }
-)
-
-```
 
 ## Recherche par rapport à la date
 
@@ -611,37 +482,10 @@ Affichez tous les noms  des restaurants qui ont une appréciation (grades) dont 
  ISODate("2012-10-24T00:00:00Z")
 ```
 
-### Correction 
-
-```js
- db.restaurants.find(
-    { 
-      "grades.date" : { $gte: ISODate("2012-10-24T00:00:00Z"), $not: { $lt: ISODate("2012-10-24T00:00:00Z") } } 
-    }
-  ,
-  { _id: 0, name: 1, borough: 1, "grades.date": 1 }
-).pretty();
-```
 
 ### Exercices supplémentaires
 
 1. Affichez la liste des restaurants dont le nom commence et se termine par une voyelle.
-
-### Correction
-
-```js
-db.restaurants.find(
-    { name: /^[ aeiouy ].*[ aeiouy ]$/i },
-    {
-        _id: 0,
-        name: 1
-    }
-).forEach(doc => {
-    const { name } = doc;
-    print(`Name : ${name}`);
-    print("----------------------------------");
-});
-```
 
 2. Affichez la liste des restaurants dont le nom commence et se termine par une même lettre. Vous ferez attention à ne pas récupérer dans votre requête les restaurants n'ayant pas de nom. 
 
@@ -653,37 +497,6 @@ Remarque vous pouvez soit programmer cet affichage, soit directement utiliser un
 \2 // permet de récupérer la deuxième chaîne de caractère(s) capturée(s)
 ```
 
-### Correction
-
-```js
-// première correction
-db.restaurants.find(
-    { name: { $nin: [""] } },
-    { name: 1, _id: 0 }
-).forEach(doc => {
-    const { name } = doc;
-    if (name.toLowerCase().substr(0, 1) === name.toLowerCase().substr(-1)) {
-        print(name);
-        print("----------------------------------");
-    }
-})
-
-// deuxième correction
-db.restaurants.find(
-    {
-        name: { $nin: [""] },
-        // regex : commence par une lettre de a à z en minuscule capturé
-        // suivi de n'importe quel caractère(s) (0, infini) et se termine par
-        // ce que les parenthèses ont capturé
-        name: { $regex: /^([a-z]).*\1$/, $options: "i" }
-    },
-    { name: 1, _id: 0 }
-).forEach(doc => {
-    const { name } = doc;
-    print(name);
-    print("----------------------------------");
-});
-```
 
 ## Lire un document entièrement résumé
 
