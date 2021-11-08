@@ -126,6 +126,8 @@ Dans le dossier **DataExamples** et dans un terminal ouvert dans ce dossier tape
 --file indique le nom du fichier à intégrer dans la base de données
 --drop supprimera au préalable les collections existantes.
 
+La commande mongoimport s'exécute dans votre terminale, attention elle ne doit pas être lancer dans la console mongo. Le fichier data doit également se trouver dans le dossier où vous ouvrez votre terminale, plus pratique pour le chemin pour récupérer le fichier data, car il se trouve au même niveau de la commande lancée.
+
 ```bash
 # Import de données csv dans une base de données que l'on va créer train
 mongoimport --db ny --collection restaurants --file primer-dataset.json --drop
@@ -216,6 +218,10 @@ db.restaurants.find({
 db.authors.find({ $or: [{ name: "Alan" }, { name: "Alice" }] });
 ```
 
+## 01 Exercice analyser une requête
+
+Analysez la requête suivante sans l'exécuter dans MongoDB. Et expliquez ce qu'elle récupère.
+
 Voici un exemple de condition logique en utilisant OR et AND. Remarquez le deuxième argument de la méthode find, il permet de faire une projection, c'est-à-dire de sélectionner uniquement certaine(s) propriété(s) du document :
 
 ```js
@@ -227,6 +233,8 @@ db.restaurants.find(
   { name: 1, borough: 1 }
 );
 ```
+
+
 
 Cela correspondrait (...) en SQL à la requête suivante :
 

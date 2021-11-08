@@ -109,7 +109,7 @@ Vous devez d'abord installer **brew**. Puis tapez les lignes de commandes suivan
 brew tap mongodb/brew
 brew install mongodb-community
 
-# Créer le dossier pour les bases de données MongoDB
+# Si brew n'a pas installé le dossier data/dv. Créer le dossier pour les bases de données MongoDB
 sudo mkdir -p /data/db
 
 # Permissions pour travailler avec le dossier des bases de données
@@ -142,6 +142,19 @@ storage:
   dbPath: /usr/local/var/mongodb
 net:
   bindIp: 127.0.0.1
+```
+
+Quelques commandes utiles pour la suite :
+
+```bash
+# lancer le serveur mongo
+brew services start mongodb
+
+# arreter le serveur mongo
+brew services stop mongodb
+
+# Installer les outils mongo pour le cours
+brew install mongodb-database-tools
 ```
 
 ### Linux
