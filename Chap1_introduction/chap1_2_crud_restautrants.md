@@ -270,33 +270,6 @@ Puis comparez le résultat avec la méthode count :
 db.collection.findOne(query, restriction).count();
 ```
 
-### Correction
-
-```js
-// première version
-const cursor = db.restaurants.find({ borough: "Brooklyn" }, { _id: 1 });
-
-let count = 0;
-while (cursor.hasNext()) {
-  cursor.next();
-  count = count + 1;
-}
-print("next---- une dernière fois");
-// print(cursor.next()); // plus de doc
-print(count);
-
-// deuxième version
-let count = 0;
-function counter(doc) {
-  count += 1;
-  print(doc._id);
-}
-// on peut passer en JS une fonction en paramètre ici forEach de Mongo
-// passera le paramètre doc à la fonction
-db.restaurants.find({ borough: "Brooklyn" }, { _id: 1 }).forEach(counter);
-
-print(count);
-```
 
 ### 2. Exercices sur la notion de filtrage
 
