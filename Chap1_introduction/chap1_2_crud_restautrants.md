@@ -126,6 +126,8 @@ Dans le dossier **DataExamples** et dans un terminal ouvert dans ce dossier tape
 --file indique le nom du fichier à intégrer dans la base de données
 --drop supprimera au préalable les collections existantes.
 
+La commande mongoimport s'exécute dans votre terminale, attention elle ne doit pas être lancer dans la console mongo. Le fichier data doit également se trouver dans le dossier où vous ouvrez votre terminale, plus pratique pour le chemin pour récupérer le fichier data, car il se trouve au même niveau de la commande lancée.
+
 ```bash
 # Import de données csv dans une base de données que l'on va créer train
 mongoimport --db ny --collection restaurants --file primer-dataset.json --drop
