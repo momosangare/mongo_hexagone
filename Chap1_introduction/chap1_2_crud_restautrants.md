@@ -247,7 +247,7 @@ WHERE borough = "Brooklyn"
 AND ( `name` LIKE '/^B/' OR `name` LIKE '/^W/')
 ```
 
-## 1. Exercice compter le nombre de restaurants
+## 02 Exercice compter le nombre de restaurants
 
 Sans utiliser la méthode count dans un premier temps comptez le nombre de restaurants dans le quartier de Brooklyn.
 
@@ -270,8 +270,7 @@ Puis comparez le résultat avec la méthode count :
 db.collection.findOne(query, restriction).count();
 ```
 
-
-### 2. Exercices sur la notion de filtrage
+### Présentation des opérateurs MongoDB pour le filtrage des données
 
 Exemple de filtres classiques :
 
@@ -342,7 +341,7 @@ $regex
 { "name": /^A/  }
 
 ```
-## Regex présentation
+### Notion sur les Regex
 
 Regex signifie en réalité Regular Expressions. Mais c'est un mot issu d'une fusion d'autres mots dont Regular Expressions en fait parti.
 
@@ -360,24 +359,30 @@ Pour utiliser une Regex complexe avec Mongo il faudra utiliser la syntaxe suivan
 
 MongoDB utilise Perl compatible regular expressions (i.e. "PCRE" ) version 8.42 en 2021 avec le support UTF-8.
 
-## Exercice
+## Partie 1 Liste d'Exercices
 
-1. Combien y a t il de restaurants qui font de la cuisine italienne et qui ont eu un score de 10 au moins ?
-   Affichez également le nom, les scores et les coordonnées GPS de ces restaurants. Ordonnez les résultats
-   par ordre décroissant sur les noms des restaurants.
+- 01 Combien y a t il de restaurants qui font de la cuisine italienne et qui ont eu un score de 10 au moins ?
 
-Remarque pour la dernière partie de la question utilisez la méthode sort :
+*Affichez également le nom, les scores et les coordonnées GPS de ces restaurants. Ordonnez les résultats par ordre décroissant sur les noms des restaurants.*
+
+**Remarque** pour la dernière partie de la question utilisez la méthode sort :
 
 ```js
 db.collection.findOne(query, restriction).sort({ key: 1 }); // 1 pour ordre croissant et -1 pour décroissant
 ```
 
-2.1 Quels sont les restaurants qui ont eu un grade A avec un score supérieur ou égal à 20 en même temps ? Affichez uniquement les noms et ordonnez les par ordre décroissant. Affichez le nombre de résultat.
+- 02 Quels sont les restaurants qui ont eu un grade A avec un score supérieur ou égal à 20 en même temps ? 
+
+Utilisez la syntaxe suivante pour faire cette requête, elemMatch vérifie la concordance du filtrage sur des sous-document.
+
+```js
+{ "content": { $elemMatch: { "name": "Turing Award", "year": { $gt: 1980 } } } }
+```
+
+Affichez uniquement les noms et ordonnez les par ordre décroissant. Affichez le nombre de résultat.
 
 
-2.2 Quels sont les restaurants qui ont eu un grade A et un score supérieur ou égal à 20 ? Affichez uniquement les noms et ordonnez les par ordre décroissant. Affichez le nombre de résultat.
-
-
+- 03 Quels sont les restaurants qui ont eu un grade A et un score supérieur ou égal à 20 ? Affichez uniquement les noms et ordonnez les par ordre décroissant. Affichez le nombre de résultat.
 
 Remarque pour la dernière partie de la question utilisez la méthode count :
 
@@ -385,44 +390,39 @@ Remarque pour la dernière partie de la question utilisez la méthode count :
 db.collection.findOne(query, restriction).count();
 ```
 
-- 3. A l'aide de la méthode distinct trouvez tous les quartiers distincts de NY.
+- 04. A l'aide de la méthode distinct trouvez tous les quartiers distincts de NY.
 
 ```js
 db.restaurants.distinct("borough");
 ```
 
-- 4. Trouvez tous les types de restaurants dans le quartiers du Bronx. Vous pouvez là encore utiliser distinct et un deuxième paramètre pour préciser sur quel ensemble vous voulez appliquer cette close :
+- 05 Trouvez tous les types de restaurants dans le quartiers du Bronx. Vous pouvez là encore utiliser distinct et un deuxième paramètre pour préciser sur quel ensemble vous voulez appliquer cette close :
 
 ```js
 db.restaurants.distinct("field", { key: "value" });
 ```
 
-- 6. Même question mais, on aimerait récupérer les restaurants qui ont eu à la dernière inspection un A ou B. Vous pouvez utilisez la notion d'indice sur la clé grade :
+- 06 Trouvez tous les restaurants dans le quartier du Bronx qui ont le même nombre de grades.
+
+- 07. Sélectionnez les restaurants dont le grade est A ou B dans le Bronx.
+
+- 08. Même question mais, on aimerait récupérer les restaurants qui ont eu à la dernière inspection (elle apparaît théoriquement en premier dans la liste des grades) un A ou B. Vous pouvez utilisez la notion d'indice sur la clé grade :
 
 ```js
 "grades.2.grade";
-
 ```
 
+- 09. Sélectionnez maintenant tous les restaurants qui ont le mot "Coffee" ou "coffee" dans la propriété name du document. Puis, même question mais uniquement dans le quartier du Bronx.
 
-_Rechercher tous les grades distincts dans la collection._
+Comptez également leurs nombres total et calculez la différences avec Coffee et coffee.
 
-```js
-db.restaurants.distinct("grades.grade");
-```
+- 10. Trouvez tous les restaurants avec les mots Coffee ou Restaurant et qui ne contiennent pas le mot Starbucks. Puis, même question mais uniquement dans le quartier du Bronx.
 
-On aimerait maintenant avoir que des A ou que des B dans les notations des restaurants.
+- 11. Nouvelle question : Trouvez tous les restaurants qui ont dans leur nom le mot clé coffee, qui sont dans le bronx ou dans Brooklyn, qui ont eu exactement 4 appréciations (grades).
 
+- 12. Affichez tous les noms de ces restaurants en majuscule avec leur dernière date et permière date d'évaluation.
 
-- 7. Sélectionnez maintenant tous les restaurants qui ont le mot "Coffee" ou "coffee" dans la propriété name du document. Puis, même question mais uniquement dans le quartier du Bronx.
-
-- 8. Trouvez tous les restaurants avec les mots Coffee ou Restaurant et qui ne contiennent pas le mot Starbucks. Puis, même question mais uniquement dans le quartier du Bronx.
-
-- 9. Nouvelle question : Trouvez tous les restaurants qui ont dans leur nom le mot clé coffee, qui sont dans le bronx ou dans Brooklyn, qui ont eu exactement 4 appréciations (grades).
-
-- 10. Affichez tous les noms de ces restaurants en majuscule avec leur dernière date et permière date d'évaluation.
-
-- 11. Précisez également le quartier dans lequel ce restaurent se trouve.
+- 13. Précisez également le quartier dans lequel ce restaurent se trouve.
 
 Indications : utilisez les opérateurs suivants :
 
@@ -434,8 +434,7 @@ ISODate("2012-10-24T00:00:00Z"); // UTC -2h par rapport à l'heure française
 "bonjour".toUpperCase();
 ```
 
-
-## Recherche de restaurents à proximité d'un lieu
+## Partie 2 Recherche de restaurents à proximité d'un lieu
 
 MongoDB permet de gérér des points GPS. Dans la collection restaurants nous avons un champ address.coord qui correspond à des coordonnées GPS (longitude & latitude).
 
@@ -459,7 +458,6 @@ Indications : vous utiliserez la syntaxe suivante avec les opérateurs MongoDB :
 // opérateur
 { $nearSphere: { $geometry: { type: "Point", coordinates: coordinate }, $maxDistance: VOTRE_DISTANCE_EN_METRE } }
 ```
-
 
 ## Recherche par rapport à la date
 
