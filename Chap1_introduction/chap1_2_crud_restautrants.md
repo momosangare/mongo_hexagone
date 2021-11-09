@@ -361,7 +361,7 @@ MongoDB utilise Perl compatible regular expressions (i.e. "PCRE" ) version 8.42 
 
 ## Partie 1 Liste d'Exercices
 
-### 01 Combien y a t il de restaurants qui font de la cuisine italienne et qui ont eu un score de 10 au moins ?
+### 01. Combien y a t il de restaurants qui font de la cuisine italienne et qui ont eu un score de 10 au moins ?
 
 *Affichez également le nom, les scores et les coordonnées GPS de ces restaurants. Ordonnez les résultats par ordre décroissant sur les noms des restaurants.*
 
@@ -371,7 +371,7 @@ MongoDB utilise Perl compatible regular expressions (i.e. "PCRE" ) version 8.42 
 db.collection.findOne(query, restriction).sort({ key: 1 }); // 1 pour ordre croissant et -1 pour décroissant
 ```
 
-### 02 Quels sont les restaurants qui ont eu un grade A avec un score supérieur ou égal à 20 en même temps ? 
+### 02. Quels sont les restaurants qui ont eu un grade A avec un score supérieur ou égal à 20 en même temps ? 
 
 Utilisez la syntaxe suivante pour faire cette requête, elemMatch vérifie la concordance du filtrage sur des sous-document.
 
@@ -382,7 +382,7 @@ Utilisez la syntaxe suivante pour faire cette requête, elemMatch vérifie la co
 Affichez uniquement les noms et ordonnez les par ordre décroissant. Affichez le nombre de résultat.
 
 
-### 03 Quels sont les restaurants qui ont eu un grade A et un score supérieur ou égal à 20 ? Affichez uniquement les noms et ordonnez les par ordre décroissant. Affichez le nombre de résultat.
+### 03. Quels sont les restaurants qui ont eu un grade A et un score supérieur ou égal à 20 ? Affichez uniquement les noms et ordonnez les par ordre décroissant. Affichez le nombre de résultat.
 
 Remarque pour la dernière partie de la question utilisez la méthode count :
 
@@ -396,7 +396,7 @@ db.collection.findOne(query, restriction).count();
 db.restaurants.distinct("borough");
 ```
 
-### 05 Trouvez tous les types de restaurants dans le quartiers du Bronx. Vous pouvez là encore utiliser distinct et un deuxième paramètre pour préciser sur quel ensemble vous voulez appliquer cette close :
+### 05. Trouvez tous les types de restaurants dans le quartiers du Bronx. Vous pouvez là encore utiliser distinct et un deuxième paramètre pour préciser sur quel ensemble vous voulez appliquer cette close :
 
 ```js
 db.restaurants.distinct("field", { key: "value" });
@@ -438,7 +438,7 @@ ISODate("2012-10-24T00:00:00Z"); // UTC -2h par rapport à l'heure française
 "bonjour".toUpperCase();
 ```
 
-## Partie 2 Recherche de restaurants à proximité d'un lieu
+## Recherche de restaurants à proximité d'un lieu
 
 MongoDB permet de gérér des points GPS. Dans la collection restaurants nous avons un champ address.coord qui correspond à des coordonnées GPS (longitude & latitude).
 
