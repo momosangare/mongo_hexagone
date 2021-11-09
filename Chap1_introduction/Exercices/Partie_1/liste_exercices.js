@@ -46,6 +46,24 @@ db.restaurants.find({
     }
 ).pretty()
 
+// uniquement score et grade 
+
+db.restaurants.find({
+    grades: {
+        $not: {
+            $elemMatch: {
+                "score": { $lte: 20 },
+                 "grade": { $in : ["B", "C"]}
+            }
+        }
+    }
+}, {
+    _id : 0,
+    grades : 1
+}
+).pretty()
+
+
 // 03 Quels sont les restaurants qui ont eu un grade A et un score supérieur ou égal à 20 ? Affichez uniquement les noms et ordonnez les par ordre décroissant. Affichez le nombre de résultat.
 
 db.restaurants.find(
@@ -58,3 +76,38 @@ db.restaurants.find(
         "grades.grade": 1,
         "grades.score": 1
     }).sort({ name: -1 });
+
+
+// 03 Quels sont les restaurants qui ont eu un grade A et un score supérieur ou égal à 20 ? Affichez uniquement les noms et ordonnez les par ordre décroissant. Affichez le nombre de résultat.
+
+db.restaurants.find(
+    {
+        "grades.grade": "A",
+        "grades.score": { $gte: 20 }
+    },
+    {
+        _id: 0,
+        "grades.grade": 1,
+        "grades.score": 1
+    }).sort({ name: -1 });
+
+
+//  04. A l'aide de la méthode distinct trouvez tous les quartiers distincts de NY.
+db.restaurants.distinct('borough');
+
+// 05 Trouvez tous les types de restaurants dans le quartiers du Bronx. Vous pouvez là encore utiliser distinct et un deuxième paramètre pour préciser sur quel ensemble vous voulez appliquer cette close.
+
+db.restaurants.distinct('cuisine', { "borough": "Bronx" });
+
+// 06 Trouvez tous les restaurants dans le quartier du Bronx qui ont eux 4 grades.
+
+db.restaurants.find({ "borough": "Bronx", "grades": { "$size": 4 } }, { grades : 1, name : 1, _id : 0}).pretty()
+
+// 07. Sélectionnez les restaurants dont le grade est A ou B dans le Bronx.
+
+db.restaurants.find({
+    $and: [
+        { "borough": "Bronx" },
+        { "grades.grade": { $in: ["A", "B"] } }
+    ]
+}).count()
